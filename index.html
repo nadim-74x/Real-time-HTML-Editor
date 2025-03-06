@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time HTML Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #1e1e2e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        textarea {
+            background: #2d2d3c;
+            color: #ffffff;
+            resize: none;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+            overflow: auto;
+        }
+        iframe {
+            background: #fff;
+            border-radius: 10px;
+            overflow: auto;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .preview-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-5">
+    <h1 class="text-3xl font-bold mb-4">Real-time HTML Editor</h1>
+    
+    <div id="editor-container" class="w-full max-w-4xl flex flex-col md:flex-row gap-4">
+        <textarea id="editor" class="w-full md:w-1/2 h-96 p-4 border overflow-auto" onkeyup="updatePreview()">
+</textarea>
+        <div class="preview-container w-full md:w-1/2 h-96 overflow-auto">
+            <iframe id="preview"></iframe>
+        </div>
+    </div>
+    
+    <footer class="text-sm mt-5 opacity-75">
+        Created by <a href="https://t.me/TCS_DEMONIC" class="text-blue-400 hover:underline">NADIM</a> and hosted by <a href="https://t.me/termux_command_store" class="text-blue-400 hover:underline">N-R</a>
+    </footer>
+
+    <script>
+        function updatePreview() {
+            let content = document.getElementById('editor').value;
+            let previewFrame = document.getElementById('preview').contentWindow.document;
+            previewFrame.open();
+            previewFrame.write(content);
+            previewFrame.close();
+        }
+        
+        function adjustLayout() {
+            let container = document.getElementById('editor-container');
+            if (window.innerWidth < 768) {
+                container.classList.remove('md:flex-row');
+                container.classList.add('flex-col');
+            } else {
+                container.classList.remove('flex-col');
+                container.classList.add('md:flex-row');
+            }
+        }
+        
+        window.onload = () => { 
+            updatePreview();
+            adjustLayout();
+        };
+        window.onresize = adjustLayout;
+    </script>
+</body>
+</html>
